@@ -9,16 +9,18 @@ int geta(int x){
 }
 int main()
 {
-	int a,c,b,d;
+	int a,c,b,d,f;
 	scanf("%d",&a);
 	char all[a][16];
 	int allc[a],allb[a];
-	int allh[10][10][10][a];
+	// int allh[10][a];
+	// memset(allh,0,sizeof(allh));
 
 	for (int i = 0; i < a; ++i)
 	{
 		scanf("%s",all[i]);
 	}
+	f=0;
 	for (int i = 0; i < a; ++i)
 	{
 		int l = strlen(all[i]);
@@ -41,30 +43,36 @@ int main()
 			c++;
 		}
 
-		allc[i] = b;
-		for (int k = 0; k < i; ++k)
+		for (int k = 0; k < f; ++k)
 		{
 			if(allc[k]==b){
-				allb[k] = 1;
+				allb[k] += 1;
 				d++;
 			}
 		}
-		allb[i] = d;
+		if(d==1){
+			allc[f] = b;
+			allb[f] = d;
+			f++;
+		}
 	}
 	d=0;
-	for (int i = 0; i < a; ++i)
+	for (int i = 0; i < f; ++i)
 	{
-
 		if(allb[i]>1){
+			// allh[allc[i]] = allb[i];
 			allb[d] = allb[i];
 			allc[d] = allc[i];
 			d++;
 		}
 	}
+
 	if(d==0){
 		printf("No duplicates.");
 		return 0;
 	}
+
+
 	a=d;
 	for (int i = 0; i < a - 1; ++i)
 	{
