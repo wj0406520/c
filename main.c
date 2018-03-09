@@ -55,8 +55,6 @@ int main()
 	for (int i = 0; i < a; ++i)
 	{
 
-
-
 		if(allb[i]>1){
 			allb[d] = allb[i];
 			allc[d] = allc[i];
