@@ -1,103 +1,100 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-int geta(int x){
-	if(x>81){
-		x=x-1;
-	}
-	return (x - 65) / 3 + 2;
-}
+
+struct ln{
+	char *s;
+	struct ln *p;
+};
 int main()
 {
-	int a,c,b,d,f;
-	scanf("%d",&a);
-	char all[a][16];
-	int allc[a],allb[a];
-	// int allh[10][a];
-	// memset(allh,0,sizeof(allh));
-
-	for (int i = 0; i < a; ++i)
+	int num,length;
+	scanf("%d",&length);
+	scanf("%d",&num);
+	//多一个存储\n不然变成一行了
+	char str[num][length+1];
+	int count[num];
+	ln al[6000];
+	// 按逆序对数从少到多输出字符串，逆序对数一样多的字符串按照输入的顺序输出。
+	// ACGT
+	for (int i = 0; i < num; ++i)
 	{
-		scanf("%s",all[i]);
-	}
-	f=0;
-	for (int i = 0; i < a; ++i)
-	{
-		int l = strlen(all[i]);
-		c=b=0;
-		d=1;
-		for (int j = 0; j < l; ++j)
+		int n=0;
+		int m[4]={0,0,0,0};
+		scanf("%s",str[i]);
+		// printf("%s\n", str[i]);
+	    struct ln l;        /* 声明 Book1，类型为 Books */
+		for (int j = 0; j < length; ++j)
 		{
-			int n,m;
-			m = all[i][j];
 
-			if(m==45){
-				continue;
+			switch(str[i][j]) {
+			   case 'A':
+			   		m[0]+=1;
+			      break;
+			   case 'C':
+			   		n+=length-j-1-m[1];
+			   		m[1]+=1;
+			      break;
+			   case 'G':
+			   		n+=length-j-1-m[2]-m[1];
+			   		m[2]+=1;
+			      break;
+			   case 'T':
+			   		n+=length-j-1-m[3]-m[2]-m[1];
+			   		m[3]+=1;
+			      break;
 			}
-			if(m > 60){
-				n = geta(m);
-			}else{
-				n = m - 48;
-			}
-			b = n*pow(10, (6-c)) + b;
-			c++;
+			/* code */
 		}
-
-		for (int k = 0; k < f; ++k)
-		{
-			if(allc[k]==b){
-				allb[k] += 1;
-				d++;
+		count[i] = n;
+		l.s = str[i];
+		// printf("%s\n", l.s);
+		// printf("%s\n",al[n].s);
+		if(al[n].s==NULL){
+			al[n] = l;
+		}else{
+			struct ln *m;
+			m = al[n].p;
+			while(m->p != NULL){
+				m = m->p;
 			}
-		}
-		if(d==1){
-			allc[f] = b;
-			allb[f] = d;
-			f++;
+			m->p = &l;
 		}
 	}
-	d=0;
-	for (int i = 0; i < f; ++i)
+
+	for (int i = 0; i < 5000; ++i)
 	{
-		if(allb[i]>1){
-			// allh[allc[i]] = allb[i];
-			allb[d] = allb[i];
-			allc[d] = allc[i];
-			d++;
-		}
-	}
-
-	if(d==0){
-		printf("No duplicates.");
-		return 0;
-	}
-
-
-	a=d;
-	for (int i = 0; i < a - 1; ++i)
-	{
-		for (int j = 0; j < a - i - 1; ++j)
-		{
-			if(allc[j]>allc[j+1]){
-				c = allc[j];
-				allc[j] = allc[j+1];
-				allc[j+1] = c;
-
-				c = allb[j];
-				allb[j] = allb[j+1];
-				allb[j+1] = c;
+		if(al[i].s == NULL) continue;
+		if(al[i].p==NULL){
+			printf("%s\n", al[i].s);
+		}else{
+			struct ln *m;
+			m = al[i].p;
+			while(m->p != NULL){
+				printf("%s\n", m->s);
+				m = m->p;
 			}
+			printf("%s\n", m->s);
 		}
+		// printf("%s\n", str[i]);
+		/* code */
 	}
+	// 解法1
+	// 1.4后面小于4的都是逆序对
+	// 2.3后面小于3的都是逆序对
+	// 4.2后面小于2的都是逆序对
 
-	for (int i = 0; i < a; i++)
-	{
-		d=allc[i]/10000;
-		b=allc[i]-d*10000;
-		printf("%d-%d %d\n", d,b,allb[i]);
+	// 解法2
+	// 1.当前是4则有length-1个
+	// 2.当后面有一个则逆序对减1
+	// 3.当前是3则有length-1个
 
-	}
+	// 4假设后面都是3则有length-j-1 出现一个4则+1
+	// 3假设后面都是2则有length-j-1 出现一个3或者4则加1
+	// 2假设后面都是1则有length-j-1 出现一个2或者3或者4则加1
 
+	// 2114 3-1=2
+	// 32134  4+3+0-1-1+1-1-1-1=
 
 	return 0;
 }
