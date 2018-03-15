@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#define ID 1007
 
 int main()
 {
