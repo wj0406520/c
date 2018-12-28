@@ -31,7 +31,6 @@ int main()
 	scanf("%d",&n);
 	scanf("%d",&l);
 
-	
 	if(m == n){
 		printf("Impossible\n");
 		return 0;
